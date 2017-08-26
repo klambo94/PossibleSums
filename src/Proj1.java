@@ -1,19 +1,20 @@
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by Kendra's Laptop on 8/24/2017.
+ * Returns
  */
 public class Proj1 {
 
-    public void main(String[] args) {
+    public static void main(String[] args) {
         String outputDisplay = "Please enter n > 0: ";
         System.out.print(outputDisplay);
 
         int n = 0;
         boolean hasError = true;
-        while(hasError) {
+        while (hasError) {
             Scanner sc = new Scanner(System.in);
 
             try {
@@ -21,7 +22,7 @@ public class Proj1 {
 
                 n = Integer.parseInt(input);
 
-                if(n > 0) {
+                if (n > 0) {
                     hasError = false;
                     sc.close();
                 } else {
@@ -33,17 +34,30 @@ public class Proj1 {
             }
         }
 
-        if(n == 0 ) {
+        if (n == 0) {
             System.out.println("N is invalid: " + n);
             System.exit(1);
         }
-        List<String> possibileSums = determinePossibleSums(n);
+        determinePossibleSums(n);
     }
 
-    public List<String> determinePossibleSums (int n) {
-        List<String> possibleSums = new ArrayList <>();
+    private static void determinePossibleSums(int n) {
+        List<String> sums = partition(n, n, "", new ArrayList<>());
 
+        for(int i = sums.size() - 1; i >= 0; i--) {
+            System.out.println(sums.get(i).replaceFirst("\\+ ", ""));
+        }
+    }
 
-        return possibleSums;
+    private static List<String> partition(int n, int max, String sumString, List<String> sumArray) {
+        if(n == 0) {
+            sumArray.add(sumString);
+        } else {
+            for(int i = Math.min(n, max); i >=1; i--) {
+                partition(n - i, i, sumString + " + " + i, sumArray);
+            }
+        }
+        return sumArray;
     }
 }
+
